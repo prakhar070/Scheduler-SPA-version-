@@ -19,6 +19,15 @@ require "action_cable/engine"
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
+
+module ApiApp
+  class Application < Rails::Application
+    #.....
+    config.autoload_paths << Rails.root.join('lib')
+    #.....
+  end
+end
+
 module InterviewApi
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
