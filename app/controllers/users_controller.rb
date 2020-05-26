@@ -1,5 +1,13 @@
 class UsersController < ApplicationController
     skip_before_action :authenticate_request, only: [:login, :register]
+
+    #this would give a list of all the users
+    #this is needed when we want to display the participants to the user to choose from
+    def index
+        @users = User.where.not(id: @current_user.id)
+        render json: {users: @users} , status: :ok
+    end
+
     #POST /register
     def register
         @user = User.create(user_params)

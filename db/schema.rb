@@ -12,6 +12,20 @@
 
 ActiveRecord::Schema.define(version: 2020_05_25_193612) do
 
+  create_table "interviews", force: :cascade do |t|
+    t.datetime "starttime"
+    t.integer "interviewer_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "title"
+    t.datetime "endtime"
+  end
+
+  create_table "interviews_users", id: false, force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "interview_id", null: false
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "name"
     t.string "email"
