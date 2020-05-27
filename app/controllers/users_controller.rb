@@ -1,6 +1,5 @@
 class UsersController < ApplicationController
     skip_before_action :authenticate_request, only: [:login, :register]
-
     #this would give a list of all the users
     #this is needed when we want to display the participants to the user to choose from
     def index
@@ -15,12 +14,12 @@ class UsersController < ApplicationController
             response = { message: 'User created successfully!'}
             render json: response, status: :created
         else
-            render json: @user.errors, status: :bad_request
+            render json: {error: @user.errors}, status: :bad_request
         end
     end
 
     def login
-        authenticate(params[:email], params[:password])
+        authenticate(params[:user][:email], params[:user][:password])
     end
 
     def test
@@ -35,6 +34,7 @@ class UsersController < ApplicationController
         if command.success?
             render json:{
                 access_token: command.result,
+                username: User.find_by_email(email).name,
                 message: 'Login Successful'
             }
         else
@@ -42,6 +42,6 @@ class UsersController < ApplicationController
         end
     end
     def user_params
-        params.permit(:name, :email, :password)
+        params.require(:user).permit(:name, :email, :password,:password_confirmation)
     end
 end
